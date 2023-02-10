@@ -1,6 +1,5 @@
 let had = [document.querySelector(".had")]
 
-
 function pohniHadem(dolu, doprava) {
   const hadiHlava = had[0]
   console.log("Had je na " + hadiHlava.id);
@@ -19,7 +18,6 @@ function pohniHadem(dolu, doprava) {
   if (cilovePolicko.classList.contains("zradlo")) {
     console.log("Had bude žrát");
     cilovePolicko.classList.remove("zradlo");
-
   
     generateFood()
   } else {
@@ -38,9 +36,6 @@ function autopohyb(udalost) {
   console.log("Posledni klavesa je " + posledniKlavesa);
 
   }
-pohyb()
-
-
 
 generateFood()
 
@@ -66,9 +61,8 @@ function pohyb() {
 function generateFood() {
   let x = Math.floor(Math.random() * 4)+1;
   let y = Math.floor(Math.random() * 4)+1;
- let zradlo = getElementById (x + ":"+y)
+ let zradlo = document.getElementById (x + ":"+y)
  zradlo.classList.add("zradlo");
 }
 
 document.addEventListener("keydown", autopohyb);
-
