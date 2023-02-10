@@ -1,5 +1,6 @@
 let had = [document.querySelector(".had")]
 
+
 function pohniHadem(dolu, doprava) {
   const hadiHlava = had[0]
   console.log("Had je na " + hadiHlava.id);
@@ -18,29 +19,56 @@ function pohniHadem(dolu, doprava) {
   if (cilovePolicko.classList.contains("zradlo")) {
     console.log("Had bude žrát");
     cilovePolicko.classList.remove("zradlo");
+
+  
+    generateFood()
   } else {
     const polickoKterePrestavaBytHadem = had.pop();
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
 }
 
-function pohyb(udalost) {
-  if (udalost.which === 37) {
+let posledniKlavesa = 0;
+function autopohyb(udalost) {
+  const jeToPrvniKlavesa = (posledniKlavesa === 0);
+  posledniKlavesa = udalost.which;
+  if (jeToPrvniKlavesa) {
+    setInterval(pohyb, 300);
+  }
+  console.log("Posledni klavesa je " + posledniKlavesa);
+
+  }
+pohyb()
+
+
+
+generateFood()
+
+function pohyb() {
+  if (posledniKlavesa === 37) {
     console.log("Hade, jdi doleva pls");
     pohniHadem(0, -1);
   }
-  if (udalost.which === 38) {
+  if (posledniKlavesa === 38) {
     console.log("Hade, jdi nahoru pls");
     pohniHadem(-1, 0);
   }
-  if (udalost.which === 39) {
+  if (posledniKlavesa === 39) {
     console.log("Hade, jdi doprava pls");
     pohniHadem(0, 1);
   }
-  if (udalost.which === 40) {
+  if (posledniKlavesa === 40) {
     console.log("Hade, jdi dolů pls");
     pohniHadem(1, 0);
   }
+  
+}
+function generateFood() {
+  let x = Math.floor(Math.random() * 4)+1;
+  let y = Math.floor(Math.random() * 4)+1;
+ let zradlo = getElementById (x + ":"+y)
+ zradlo.classList.add("zradlo");
 }
 
-document.addEventListener("keydown", pohyb);
+document.addEventListener("keydown", autopohyb);
+
