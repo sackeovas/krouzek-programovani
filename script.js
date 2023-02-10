@@ -11,6 +11,8 @@ function pohniHadem(dolu, doprava) {
 
   const cilovePolicko = document.getElementById(idCil);
 
+  kontrolaProhry(cilovePolicko)
+
   had.unshift(cilovePolicko);
 
   cilovePolicko.classList.add("had");
@@ -26,7 +28,9 @@ function pohniHadem(dolu, doprava) {
   }
 }
 
+
 let posledniKlavesa = 0;
+
 function autopohyb(udalost) {
   const jeToPrvniKlavesa = (posledniKlavesa === 0);
   posledniKlavesa = udalost.which;
@@ -59,10 +63,25 @@ function pohyb() {
   
 }
 function generateFood() {
-  let x = Math.floor(Math.random() * 4)+1;
-  let y = Math.floor(Math.random() * 4)+1;
- let zradlo = document.getElementById (x + ":"+y)
- zradlo.classList.add("zradlo");
+  let x = Math.floor(Math.random() * 4) + 1;
+  let y = Math.floor(Math.random() * 4) + 1;
+  let nahodnePolicko = document.getElementById(x + ":" + y)
+  if (nahodnePolicko.classList.contains("had") == false) {   //tohle můžu zapsat i takto: !nahodnePolicko.classList.contains("had")
+    nahodnePolicko.classList.add("zradlo");
+  }
 }
+
+function kontrolaProhry(cilovePolicko){
+  if (cilovePolicko==null) {
+    clearInterval() //had se zastaví
+    window.alert ("Had narazil do zdi:(")
+    
+  }
+  else if (cilovePolicko.classList.contains ("had")) {
+    clearInterval() //had se zastaví
+    window.alert ("Sebe sežrat nemůžeš")
+  }
+}
+
 
 document.addEventListener("keydown", autopohyb);
