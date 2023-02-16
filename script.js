@@ -3,17 +3,44 @@ let plocha = document.getElementById("plocha")
 
 window.onload = function btnAppears() {
   let startButton = document.getElementById("startButton");
-    startButton.style.display = "block";
+  startButton.style.display = "block";
   plocha.style.display = "none";
-  
-  
-  startButton.addEventListener('click', function() {
-    startButton.style.display = "none";
+
+
+  startButton.addEventListener('click', function () {
+    startButton.style.display = "inline-block";
     plocha.style.display = "inline-block"
   });
 }
 
+const customGrid = document.getElementById("customGrid")
+customGrid.addEventListener("click", zmenaMrizky)
 
+function zmenaMrizky() {
+  const mrizka = document.getElementById("plocha");
+
+  for (const element of mrizka.querySelectorAll("br, .pole")) {
+    element.remove()
+  }
+  const puvodniMezera = document.createElement("br");
+  mrizka.append(puvodniMezera)
+
+  const poleVelikost = document.getElementById("velikost");
+  const velikost = parseInt(poleVelikost.value);
+  console.log("Měním mřížku na velikost " + velikost)
+  for (let noveX = 1; noveX <= velikost; noveX++) {
+    for (let noveY = 1; noveY <= velikost; noveY++) {
+      const novyDiv = document.createElement("div");
+      novyDiv.classList.add("pole");
+      novyDiv.id = noveX + ":" + noveY
+      mrizka.append(novyDiv);
+      console.log("Přidám div s id" + novyDiv.id);
+      mrizka.append(" ");
+    }
+    const noveBr = document.createElement("br");
+    mrizka.append(noveBr);
+  }
+}
 
 function pohniHadem(dolu, doprava) {
   const hadiHlava = had[0]
@@ -35,7 +62,7 @@ function pohniHadem(dolu, doprava) {
   if (cilovePolicko.classList.contains("zradlo")) {
     console.log("Had bude žrát");
     cilovePolicko.classList.remove("zradlo");
-  
+
     generateFood()
   } else {
     const polickoKterePrestavaBytHadem = had.pop();
@@ -54,7 +81,7 @@ function autopohyb(udalost) {
   }
   console.log("Posledni klavesa je " + posledniKlavesa);
 
-  }
+}
 
 generateFood()
 
@@ -75,7 +102,7 @@ function pohyb() {
     console.log("Hade, jdi dolů pls");
     pohniHadem(1, 0);
   }
-  
+
 }
 function generateFood() {
   let x = Math.floor(Math.random() * 4) + 1;
@@ -86,21 +113,21 @@ function generateFood() {
   }
 }
 
-function kontrolaProhry(cilovePolicko){
-  if (cilovePolicko==null) {
+function kontrolaProhry(cilovePolicko) {
+  if (cilovePolicko == null) {
     clearInterval() //had se zastaví
-    window.alert ("Had narazil do zdi:(")
-    
+    window.alert("Had narazil do zdi:(")
+
     window.location.reload(); //page reload   
 
-    
+
   }
-  else if (cilovePolicko.classList.contains ("had")) {
+  else if (cilovePolicko.classList.contains("had")) {
     clearInterval() //had se zastaví
-    window.alert ("Sebe sežrat nemůžeš")
+    window.alert("Sebe sežrat nemůžeš")
     window.location.reload();
 
-    
+
   }
 }
 
