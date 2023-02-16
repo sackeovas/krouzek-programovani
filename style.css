@@ -6,6 +6,15 @@
   background:rgb(0, 0, 0);
 }
 
+#startButton {
+  display: none;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #plocha {
   margin: auto;
   border: 0px solid rgb(0, 0, 0);

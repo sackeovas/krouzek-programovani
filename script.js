@@ -1,4 +1,19 @@
 let had = [document.querySelector(".had")]
+let plocha = document.getElementById("plocha")
+
+window.onload = function btnAppears() {
+  let startButton = document.getElementById("startButton");
+    startButton.style.display = "block";
+  plocha.style.display = "none";
+  
+  
+  startButton.addEventListener('click', function() {
+    startButton.style.display = "none";
+    plocha.style.display = "inline-block"
+  });
+}
+
+
 
 function pohniHadem(dolu, doprava) {
   const hadiHlava = had[0]
@@ -76,12 +91,20 @@ function kontrolaProhry(cilovePolicko){
     clearInterval() //had se zastaví
     window.alert ("Had narazil do zdi:(")
     
+    window.location.reload(); //page reload   
+
+    
   }
   else if (cilovePolicko.classList.contains ("had")) {
     clearInterval() //had se zastaví
     window.alert ("Sebe sežrat nemůžeš")
+    window.location.reload();
+
+    
   }
 }
+
+
 
 
 document.addEventListener("keydown", autopohyb);
