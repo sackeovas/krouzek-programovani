@@ -17,7 +17,7 @@ const customGrid = document.getElementById("customGrid")
 customGrid.addEventListener("click", zmenaMrizky)
 
 function pridejHadaNaNahodnePole(velikost) {
-  let a = Math.floor(Math.random() * velikost +2) ;
+  let a = Math.floor(Math.random() * velikost +2) ; //Math.floor zaokrouhlí na celé číslo dolů
   let b = Math.floor(Math.random() * velikost +2) ;
   let nahodnePole = document.getElementById(a + ":" + b)
 
