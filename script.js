@@ -16,6 +16,28 @@ window.onload = function btnAppears() {
 const customGrid = document.getElementById("customGrid")
 customGrid.addEventListener("click", zmenaMrizky)
 
+function pridejHadaNaNahodnePole(velikost) {
+  let a = Math.floor(Math.random() * velikost +2) ;
+  let b = Math.floor(Math.random() * velikost +2) ;
+  let nahodnePole = document.getElementById(a + ":" + b)
+
+  console.log("Chci hodit hada na " + a + ":" + b)
+
+  nahodnePole.classList.add("had");
+  had = [nahodnePole]
+}
+function pridejZradloNaNahodnePole(velikost) {
+  let a = Math.floor(Math.random() * velikost +1) ;
+  let b = Math.floor(Math.random() * velikost +1) ;
+  let nahodnePolee = document.getElementById(a + ":" + b)
+
+  console.log("Chci hodit zradlo na " + a + ":" + b)
+  if (nahodnePolee.classList.contains("had")){
+  nahodnePolee.classList.add("zradlo");
+  zradlo = [nahodnePolee]
+  }
+}
+
 function zmenaMrizky() {
   const mrizka = document.getElementById("plocha");
 
@@ -28,6 +50,7 @@ function zmenaMrizky() {
   const poleVelikost = document.getElementById("velikost");
   const velikost = parseInt(poleVelikost.value);
   console.log("Měním mřížku na velikost " + velikost)
+  mrizka.style.setProperty('--velikost', velikost)
   for (let noveX = 1; noveX <= velikost; noveX++) {
     for (let noveY = 1; noveY <= velikost; noveY++) {
       const novyDiv = document.createElement("div");
@@ -35,13 +58,13 @@ function zmenaMrizky() {
       novyDiv.id = noveX + ":" + noveY
       mrizka.append(novyDiv);
       console.log("Přidám div s id" + novyDiv.id);
-      mrizka.append(" ");
     }
     const noveBr = document.createElement("br");
     mrizka.append(noveBr);
   }
+  pridejHadaNaNahodnePole(velikost)
 }
-
+ 
 function pohniHadem(dolu, doprava) {
   const hadiHlava = had[0]
   console.log("Had je na " + hadiHlava.id);
@@ -126,12 +149,9 @@ function kontrolaProhry(cilovePolicko) {
     clearInterval() //had se zastaví
     window.alert("Sebe sežrat nemůžeš")
     window.location.reload();
-
-
   }
 }
 
-
-
-
 document.addEventListener("keydown", autopohyb);
+
+zmenaMrizky()
