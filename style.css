@@ -23,8 +23,8 @@
   width: 50px;
   display: inline-block;
   position: absolute;
-  top: 0.2%;
-  left: 30%;
+  top: 10%;
+  left: 44%;
   
 }
 
@@ -34,8 +34,8 @@ height: 50px;
 width: 130px;
 display: inline-block;
 position: absolute;
-  top: 0.2%;
-  left: 38.2%;
+  top: 10%;
+  left: 45.5%;
 }
 
 #plocha {
@@ -47,8 +47,9 @@ position: absolute;
   position: absolute;
   line-height: 0;
   top: 50%;
-  left: 50%;
-  width: 42vw;
+  left: 54%;
+  width: 39vw;
+  min-width: 600px;
   transform: translate(-50%, -50%);
 }
 
@@ -60,7 +61,9 @@ position: absolute;
   background: red;
 }
 
-
+#hadiHlava {
+  background: green;
+}
 
 .had.zradlo {
   background: orange;

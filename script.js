@@ -1,11 +1,38 @@
 let had = [document.querySelector(".had")]
 let plocha = document.getElementById("plocha")
+const poleVelikost = document.getElementById("velikost");
+const velikost = parseInt(poleVelikost.value);
+
+function pridejHadaNaNahodnePole(velikost) {
+  let a = Math.floor(Math.random() * velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
+  let b = Math.floor(Math.random() * velikost + 1) ;
+  let nahodnePole = document.getElementById(a + ":" + b)
+
+  console.log("Chci hodit hada na " + a + ":" + b)
+
+  nahodnePole.classList.add("had");
+  had = [nahodnePole]
+}
+
+function pridejZradloNaNahodnePole(velikost) {
+  let a = Math.floor(Math.random() * (velikost) + 1);
+  let b = Math.floor(Math.random() * (velikost) + 1);
+  let nahodnePolee = document.getElementById(a + ":" + b);
+
+  if (nahodnePolee.classList.contains("had")) {
+    // Recursively call the function until an unoccupied pole is found
+    pridejZradloNaNahodnePole(velikost);
+  } else {
+    nahodnePolee.classList.add("zradlo");
+    console.log("Chci hodit zradlo na " + a + ":" + b);
+    zradlo = [nahodnePolee];
+  }
+}
 
 window.onload = function btnAppears() {
   let startButton = document.getElementById("startButton");
   startButton.style.display = "block";
   plocha.style.display = "none";
-
 
   startButton.addEventListener('click', function () {
     startButton.style.display = "inline-block";
@@ -15,28 +42,6 @@ window.onload = function btnAppears() {
 
 const customGrid = document.getElementById("customGrid")
 customGrid.addEventListener("click", zmenaMrizky)
-
-function pridejHadaNaNahodnePole(velikost) {
-  let a = Math.floor(Math.random() * velikost +2) ; //Math.floor zaokrouhlí na celé číslo dolů
-  let b = Math.floor(Math.random() * velikost +2) ;
-  let nahodnePole = document.getElementById(a + ":" + b)
-
-  console.log("Chci hodit hada na " + a + ":" + b)
-
-  nahodnePole.classList.add("had");
-  had = [nahodnePole]
-}
-function pridejZradloNaNahodnePole(velikost) {
-  let a = Math.floor(Math.random() * velikost +1) ;
-  let b = Math.floor(Math.random() * velikost +1) ;
-  let nahodnePolee = document.getElementById(a + ":" + b)
-
-  console.log("Chci hodit zradlo na " + a + ":" + b)
-  if (nahodnePolee.classList.contains("had")){
-  nahodnePolee.classList.add("zradlo");
-  zradlo = [nahodnePolee]
-  }
-}
 
 function zmenaMrizky() {
   const mrizka = document.getElementById("plocha");
@@ -63,10 +68,12 @@ function zmenaMrizky() {
     mrizka.append(noveBr);
   }
   pridejHadaNaNahodnePole(velikost)
+  pridejZradloNaNahodnePole(velikost)
 }
  
 function pohniHadem(dolu, doprava) {
-  const hadiHlava = had[0]
+  const hadiHlava = had[0];
+  
   console.log("Had je na " + hadiHlava.id);
 
   let radek = parseInt(hadiHlava.id.split(":")[0]);
@@ -86,13 +93,12 @@ function pohniHadem(dolu, doprava) {
     console.log("Had bude žrát");
     cilovePolicko.classList.remove("zradlo");
 
-    generateFood()
+    pridejZradloNaNahodnePole(velikost)
   } else {
     const polickoKterePrestavaBytHadem = had.pop();
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
 }
-
 
 let posledniKlavesa = 0;
 
@@ -105,8 +111,6 @@ function autopohyb(udalost) {
   console.log("Posledni klavesa je " + posledniKlavesa);
 
 }
-
-generateFood()
 
 function pohyb() {
   if (posledniKlavesa === 37) {
@@ -125,15 +129,6 @@ function pohyb() {
     console.log("Hade, jdi dolů pls");
     pohniHadem(1, 0);
   }
-
-}
-function generateFood() {
-  let x = Math.floor(Math.random() * 4) + 1;
-  let y = Math.floor(Math.random() * 4) + 1;
-  let nahodnePolicko = document.getElementById(x + ":" + y)
-  if (nahodnePolicko.classList.contains("had") == false) {   //tohle můžu zapsat i takto: !nahodnePolicko.classList.contains("had")
-    nahodnePolicko.classList.add("zradlo");
-  }
 }
 
 function kontrolaProhry(cilovePolicko) {
@@ -142,8 +137,6 @@ function kontrolaProhry(cilovePolicko) {
     window.alert("Had narazil do zdi:(")
 
     window.location.reload(); //page reload   
-
-
   }
   else if (cilovePolicko.classList.contains("had")) {
     clearInterval() //had se zastaví
