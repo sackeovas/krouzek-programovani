@@ -23,7 +23,7 @@
   width: 50px;
   display: inline-block;
   position: absolute;
-  top: 10%;
+  top: 0%;
   left: 44%;
   
 }
@@ -34,7 +34,7 @@ height: 50px;
 width: 130px;
 display: inline-block;
 position: absolute;
-  top: 10%;
+  top: 0%;
   left: 45.5%;
 }
 
@@ -53,6 +53,11 @@ position: absolute;
   transform: translate(-50%, -50%);
 }
 
+.nesmrtelneZradlo{
+  background: gold;
+}
+
+
 .had {
   background: lime;
 }
@@ -61,7 +66,7 @@ position: absolute;
   background: red;
 }
 
-#hadiHlava {
+.hadiHlava {
   background: green;
 }
 

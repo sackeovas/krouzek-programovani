@@ -29,6 +29,25 @@ function pridejZradloNaNahodnePole(velikost) {
   }
 }
 
+//SPECIÁLNÍ ŽRÁDLA
+function nesmrtelnost(velikost){
+  let a = Math.floor(Math.random() * (velikost) + 1);
+  let b = Math.floor(Math.random() * (velikost) + 1);
+  let nahodnePolee = document.getElementById(a + ":" + b);
+
+  if (nahodnePolee.classList.contains("had")) {
+    // Recursively call the function until an unoccupied pole is found
+    nesmrtelnost(velikost);} 
+  else if(nahodnePolee.classList.contains("zradlo")) {
+    nesmrtelnost(velikost);}
+  else {
+    nahodnePolee.classList.add("nesmrtelneZradlo");
+    console.log("Chci hodit nesmrtelné žrádlo na " + a + ":" + b);
+    zradlo = [nahodnePolee];
+  }
+  }
+  
+
 window.onload = function btnAppears() {
   let startButton = document.getElementById("startButton");
   startButton.style.display = "block";
@@ -69,6 +88,7 @@ function zmenaMrizky() {
   }
   pridejHadaNaNahodnePole(velikost)
   pridejZradloNaNahodnePole(velikost)
+  nesmrtelnost(velikost)
 }
  
 function pohniHadem(dolu, doprava) {
@@ -98,18 +118,36 @@ function pohniHadem(dolu, doprava) {
     const polickoKterePrestavaBytHadem = had.pop();
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
+  
+  if (cilovePolicko.classList.contains("nesmrtelneZradlo")) {
+    console.log("Had bude nesmrtelný");
+    cilovePolicko.classList.remove("nesmrtelneZradlo");
+
+  } else {
+    const polickoKterePrestavaBytHadem = had.pop();
+    polickoKterePrestavaBytHadem.classList.remove("had");
+  }
 }
 
 let posledniKlavesa = 0;
+
+let rychlost;
 
 function autopohyb(udalost) {
   const jeToPrvniKlavesa = (posledniKlavesa === 0);
   posledniKlavesa = udalost.which;
   if (jeToPrvniKlavesa) {
-    setInterval(pohyb, 300);
+    rychlost = setInterval(pohyb, 200);
   }
   console.log("Posledni klavesa je " + posledniKlavesa);
+}
 
+function zrychlení(velikost) { //nefunguje :(((
+  if (velikost > 12){
+    clearInterval(rychlost);
+    rychlost = setInterval(pohyb, 100);
+    console.log("Zrychluji hada");
+  }
 }
 
 function pohyb() {
@@ -131,6 +169,7 @@ function pohyb() {
   }
 }
 
+
 function kontrolaProhry(cilovePolicko) {
   if (cilovePolicko == null) {
     clearInterval() //had se zastaví
@@ -142,6 +181,10 @@ function kontrolaProhry(cilovePolicko) {
     clearInterval() //had se zastaví
     window.alert("Sebe sežrat nemůžeš")
     window.location.reload();
+  }
+  if (cilovePolicko.classList.contains("nesmrtelneZradlo")){
+    setTimeout(kontrolaProhry(cilovePolicko),5000);
+    console.log ("Had je 5s nesmrtelný")
   }
 }
 
