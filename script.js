@@ -1,9 +1,27 @@
-let had = [document.querySelector(".had")]
-let plocha = document.getElementById("plocha")
-const poleVelikost = document.getElementById("velikost");
-const velikost = parseInt(poleVelikost.value);
+// Konstanty
+const plocha = document.getElementById("plocha")
+const tlacitkoStart = document.getElementById("tlacitkoStart")
+const tlacitkoZmenVelikost = document.getElementById("tlacitkoZmenVelikost")
 
-function pridejHadaNaNahodnePole(velikost) {
+// Globalní proměnné
+let had = [document.querySelector(".had")]
+let posledniKlavesa = 0;
+let rychlost;
+let velikost;
+
+// Události
+tlacitkoStart.addEventListener('click', function () {
+  tlacitkoStart.remove()
+  plocha.style.display = ""
+});
+tlacitkoZmenVelikost.addEventListener("click", zmenaMrizky)
+document.addEventListener("keydown", autopohyb);
+
+// Počáteční nastavení
+zmenaMrizky()
+
+
+function pridejHadaNaNahodnePole() {
   let a = Math.floor(Math.random() * velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
   let b = Math.floor(Math.random() * velikost + 1) ;
   let nahodnePole = document.getElementById(a + ":" + b)
@@ -14,7 +32,7 @@ function pridejHadaNaNahodnePole(velikost) {
   had = [nahodnePole]
 }
 
-function pridejZradloNaNahodnePole(velikost) {
+function pridejZradloNaNahodnePole() {
   let a = Math.floor(Math.random() * (velikost) + 1);
   let b = Math.floor(Math.random() * (velikost) + 1);
   let nahodnePolee = document.getElementById(a + ":" + b);
@@ -29,39 +47,6 @@ function pridejZradloNaNahodnePole(velikost) {
   }
 }
 
-//SPECIÁLNÍ ŽRÁDLA
-function nesmrtelnost(velikost){
-  let a = Math.floor(Math.random() * (velikost) + 1);
-  let b = Math.floor(Math.random() * (velikost) + 1);
-  let nahodnePolee = document.getElementById(a + ":" + b);
-
-  if (nahodnePolee.classList.contains("had")) {
-    // Recursively call the function until an unoccupied pole is found
-    nesmrtelnost(velikost);} 
-  else if(nahodnePolee.classList.contains("zradlo")) {
-    nesmrtelnost(velikost);}
-  else {
-    nahodnePolee.classList.add("nesmrtelneZradlo");
-    console.log("Chci hodit nesmrtelné žrádlo na " + a + ":" + b);
-    zradlo = [nahodnePolee];
-  }
-  }
-  
-
-window.onload = function btnAppears() {
-  let startButton = document.getElementById("startButton");
-  startButton.style.display = "block";
-  plocha.style.display = "none";
-
-  startButton.addEventListener('click', function () {
-    startButton.style.display = "inline-block";
-    plocha.style.display = "inline-block"
-  });
-}
-
-const customGrid = document.getElementById("customGrid")
-customGrid.addEventListener("click", zmenaMrizky)
-
 function zmenaMrizky() {
   const mrizka = document.getElementById("plocha");
 
@@ -72,8 +57,9 @@ function zmenaMrizky() {
   mrizka.append(puvodniMezera)
 
   const poleVelikost = document.getElementById("velikost");
-  const velikost = parseInt(poleVelikost.value);
+  velikost = parseInt(poleVelikost.value);
   console.log("Měním mřížku na velikost " + velikost)
+
   mrizka.style.setProperty('--velikost', velikost)
   for (let noveX = 1; noveX <= velikost; noveX++) {
     for (let noveY = 1; noveY <= velikost; noveY++) {
@@ -86,9 +72,10 @@ function zmenaMrizky() {
     const noveBr = document.createElement("br");
     mrizka.append(noveBr);
   }
-  pridejHadaNaNahodnePole(velikost)
-  pridejZradloNaNahodnePole(velikost)
-  nesmrtelnost(velikost)
+  pridejHadaNaNahodnePole()
+  pridejZradloNaNahodnePole()
+  //nesmrtelnost()
+  zrychlení()
 }
  
 function pohniHadem(dolu, doprava) {
@@ -113,25 +100,12 @@ function pohniHadem(dolu, doprava) {
     console.log("Had bude žrát");
     cilovePolicko.classList.remove("zradlo");
 
-    pridejZradloNaNahodnePole(velikost)
-  } else {
-    const polickoKterePrestavaBytHadem = had.pop();
-    polickoKterePrestavaBytHadem.classList.remove("had");
-  }
-  
-  if (cilovePolicko.classList.contains("nesmrtelneZradlo")) {
-    console.log("Had bude nesmrtelný");
-    cilovePolicko.classList.remove("nesmrtelneZradlo");
-
+    pridejZradloNaNahodnePole()
   } else {
     const polickoKterePrestavaBytHadem = had.pop();
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
 }
-
-let posledniKlavesa = 0;
-
-let rychlost;
 
 function autopohyb(udalost) {
   const jeToPrvniKlavesa = (posledniKlavesa === 0);
@@ -142,11 +116,11 @@ function autopohyb(udalost) {
   console.log("Posledni klavesa je " + posledniKlavesa);
 }
 
-function zrychlení(velikost) { //nefunguje :(((
+function zrychlení() { //nefunguje :(((
   if (velikost > 12){
+    console.log("Zrychluji hada");
     clearInterval(rychlost);
     rychlost = setInterval(pohyb, 100);
-    console.log("Zrychluji hada");
   }
 }
 
@@ -169,7 +143,6 @@ function pohyb() {
   }
 }
 
-
 function kontrolaProhry(cilovePolicko) {
   if (cilovePolicko == null) {
     clearInterval() //had se zastaví
@@ -182,12 +155,18 @@ function kontrolaProhry(cilovePolicko) {
     window.alert("Sebe sežrat nemůžeš")
     window.location.reload();
   }
-  if (cilovePolicko.classList.contains("nesmrtelneZradlo")){
-    setTimeout(kontrolaProhry(cilovePolicko),5000);
-    console.log ("Had je 5s nesmrtelný")
-  }
 }
 
-document.addEventListener("keydown", autopohyb);
 
-zmenaMrizky()
+
+/*function objeveniPortalu(klavesaP) {
+  const jeToP = (klavesaPortal === 80);
+  klavesaPortal = klavesaP.which;
+  if (jeToP) {
+    portaly()
+  }
+}
+function portaly() {
+  console.log("Portály se spawnou");
+  if ()
+}*/
