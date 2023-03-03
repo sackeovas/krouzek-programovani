@@ -6,7 +6,7 @@
   background:rgb(0, 0, 0);
 }
 
-#startButton {
+#tlacitkoStart {
   background-color: none;
   height: 130px;
   width: 130px;
@@ -28,7 +28,7 @@
   
 }
 
-#customGrid {
+#tlacitkoZmenVelikost {
 border: 1px solid black;
 height: 50px;
 width: 130px;

@@ -11,7 +11,7 @@ let velikost;
 
 // Události
 tlacitkoStart.addEventListener('click', function () {
-  tlacitkoStart.remove()
+   tlacitkoStart.remove()
   plocha.style.display = ""
 });
 tlacitkoZmenVelikost.addEventListener("click", zmenaMrizky)
@@ -170,3 +170,4 @@ function portaly() {
   console.log("Portály se spawnou");
   if ()
 }*/
+
