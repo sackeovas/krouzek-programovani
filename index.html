@@ -16,10 +16,16 @@
   <div id="nesmrtelneZradlo"></div>
   <div id="hadiHlava" ></div>
   <div id="ovladani">
-    <input id="velikost" value="8">
+    <input id="velikost" value="12">
     <button id="tlacitkoZmenVelikost">Velikost mřížky</button>
   </div>
   <div id="plocha" style="display: none;"></div>
+
+  <h2>Já jsem <span id="mojeid">zatím nepřipojený</span></h2>
+<input id="ciziid" />
+<button id="pripojse" onclick="pripojse()">Připoj se!</button>
+
+  <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
   
   <script src="script.js" type="text/javascript"></script>
 </body>

@@ -1,3 +1,95 @@
+/*
+//Multiplayer
+var peer = new Peer();
+ 
+//Id
+peer.on('open', function(id) {
+	console.log('My peer ID is: ' + id);
+  });
+
+//Připojení 
+var conn = peer.connect('another-peers-id');
+
+//Obdržení dat
+peer.on('connection', function(conn) {
+  conn.on('data', function(data){
+    // Will print 'hi!'
+    console.log(data);
+  });
+});
+
+conn.on('open', function() {
+	// Receive messages
+	conn.on('data', function(data) {
+	  console.log('Díky za data', data);
+	});
+
+	// Send messages
+	conn.send('Ahoj!');
+  });
+*/
+  
+  var peer = new Peer();
+peer.on("open", function(mojeid) {
+	document.getElementById("mojeid").textContent = mojeid
+  peer.on("connection", function(connection) {
+		noveOkynko(connection.peer, connection)
+  })
+})
+peer.on("error", function(error) {
+  console.error(error)
+  novaZprava("Chyba spojení")
+})
+
+function pripojse() {
+	const ciziid = document.getElementById("ciziid").value
+  if (ciziid === "") {
+  	return
+  }
+  document.getElementById("ciziid").value = ""
+	const connection = peer.connect(ciziid)
+  connection.on('open', function(){
+  	noveOkynko(ciziid, connection)
+  })
+  connection.on("error", function(error) {
+  	console.error(error)
+  	novaZprava("Nepodařilo se připojit k " + ciziid)
+  })
+}
+
+function novaZprava(text, element) {
+	if (element === undefined) {
+  	element = document.body
+  }
+  const zprava = document.createElement("p")
+  zprava.textContent = text
+  element.append(zprava)
+}
+//Zprávy
+function noveOkynko(ciziid, connection) {
+	const element = document.createElement("div")
+  const nadpis = document.createElement("h2")
+  const zprava = document.createElement("input")
+  const tlacitko = document.createElement("button")
+  nadpis.textContent = ciziid
+  tlacitko.textContent = "Napiš!"
+  element.append(nadpis, zprava, tlacitko)
+  document.body.append(element)
+  tlacitko.addEventListener("click", function() {
+  	connection.send(zprava.value)
+  	novaZprava("Já: " + zprava.value, element)
+    zprava.value = ""
+  })
+  connection.on("data", function(data){
+  	novaZprava("Někdo: " + data, element)
+  })
+  connection.on("error", function(error){
+  	console.error(error)
+  	novaZprava("Chyba spojení okýnka")
+  })
+}
+
+
 // Konstanty
 const plocha = document.getElementById("plocha")
 const tlacitkoStart = document.getElementById("tlacitkoStart")
@@ -67,7 +159,7 @@ function zmenaMrizky() {
       novyDiv.classList.add("pole");
       novyDiv.id = noveX + ":" + noveY
       mrizka.append(novyDiv);
-      console.log("Přidám div s id" + novyDiv.id);
+      //console.log("Přidám div s id" + novyDiv.id);
     }
     const noveBr = document.createElement("br");
     mrizka.append(noveBr);
