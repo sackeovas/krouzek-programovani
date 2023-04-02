@@ -116,7 +116,7 @@ function pohniHadem(dolu, doprava) {
 }
 
 function autopohyb(udalost) {
-  const jeToPrvniKlavesa = (posledniKlavesa === 0);
+  const jeToPrvniKlavesa = (posledniKlavesa === 0 );
   posledniKlavesa = udalost.which;
   if (jeToPrvniKlavesa) {
     rychlost = setInterval(pohyb, 200);
@@ -124,7 +124,7 @@ function autopohyb(udalost) {
   console.log("Posledni klavesa je " + posledniKlavesa);
 }
 
-function zrychlení() { //nefunguje :(((
+function zrychlení() { 
   if (velikost > 12){
     console.log("Zrychluji hada");
     clearInterval(rychlost);
@@ -151,17 +151,52 @@ function pohyb() {
   }
 }
 
+function resetujHru() {
+  // čistá plocha
+  
+  let pole = document.querySelectorAll(".pole");
+  pole.forEach(function(policko) {
+    policko.classList.remove("had", "zradlo");
+  });
+  console.log("Odstraňuji žrádla a hada");
+  //nový had a žrádlo
+  pridejZradloNaNahodnePole();
+  pridejHadaNaNahodnePole();
+  document.addEventListener("keydown", autopohyb);
+  document.addEventListener("keydown", pohyb);
+  
+  rychlost = setInterval(pohyb, 200);
+ 
+}
+
 function kontrolaProhry(cilovePolicko) {
   if (cilovePolicko == null) {
-    clearInterval() //had se zastaví
-    window.alert("Had narazil do zdi:(")
-
-    window.location.reload(); //page reload   
+    clearInterval(rychlost); //had se zastaví
+    window.alert("Had narazil do zdi:(");
+    resetujHru();
+   
+    //window.location.reload(); //page reload   
   }
   else if (cilovePolicko.classList.contains("had")) {
-    clearInterval() //had se zastaví
-    window.alert("Sebe sežrat nemůžeš")
-    window.location.reload();
+    clearInterval(rychlost); //had se zastaví
+    window.alert("Sebe sežrat nemůžeš");
+    resetujHru();
+    
+    //window.location.reload();
+  }
+}
+
+// save the score in local storage
+function ulozDelkuHada() {
+  localStorage.setItem('delkaHada', delkaHada);
+}
+
+// retrieve the score from local storage on page load
+window.onload = function() {
+  if (localStorage.getItem('delkaHada')) {
+    delkaHada = parseInt(localStorage.getItem('delkaHada'));
+    
+  document.getElementById("delkaHada").textContent = delkaHada;
   }
 }
 
