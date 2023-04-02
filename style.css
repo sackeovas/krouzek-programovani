@@ -37,7 +37,15 @@ position: absolute;
   top: 0%;
   left: 45.5%;
 }
-
+/*#delkaHada{
+border: 1px solid black;
+height: 50px;
+width: 130px;
+display: inline-block;
+position: absolute;
+  top: 0%;
+  left: 20%
+}*/
 #plocha {
   --velikost: 5;
   margin: auto;

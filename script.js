@@ -1,94 +1,3 @@
-/*
-//Multiplayer
-var peer = new Peer();
- 
-//Id
-peer.on('open', function(id) {
-	console.log('My peer ID is: ' + id);
-  });
-
-//Připojení 
-var conn = peer.connect('another-peers-id');
-
-//Obdržení dat
-peer.on('connection', function(conn) {
-  conn.on('data', function(data){
-    // Will print 'hi!'
-    console.log(data);
-  });
-});
-
-conn.on('open', function() {
-	// Receive messages
-	conn.on('data', function(data) {
-	  console.log('Díky za data', data);
-	});
-
-	// Send messages
-	conn.send('Ahoj!');
-  });
-*/
-  
-  var peer = new Peer();
-peer.on("open", function(mojeid) {
-	document.getElementById("mojeid").textContent = mojeid
-  peer.on("connection", function(connection) {
-		noveOkynko(connection.peer, connection)
-  })
-})
-peer.on("error", function(error) {
-  console.error(error)
-  novaZprava("Chyba spojení")
-})
-
-function pripojse() {
-	const ciziid = document.getElementById("ciziid").value
-  if (ciziid === "") {
-  	return
-  }
-  document.getElementById("ciziid").value = ""
-	const connection = peer.connect(ciziid)
-  connection.on('open', function(){
-  	noveOkynko(ciziid, connection)
-  })
-  connection.on("error", function(error) {
-  	console.error(error)
-  	novaZprava("Nepodařilo se připojit k " + ciziid)
-  })
-}
-
-function novaZprava(text, element) {
-	if (element === undefined) {
-  	element = document.body
-  }
-  const zprava = document.createElement("p")
-  zprava.textContent = text
-  element.append(zprava)
-}
-//Zprávy
-function noveOkynko(ciziid, connection) {
-	const element = document.createElement("div")
-  const nadpis = document.createElement("h2")
-  const zprava = document.createElement("input")
-  const tlacitko = document.createElement("button")
-  nadpis.textContent = ciziid
-  tlacitko.textContent = "Napiš!"
-  element.append(nadpis, zprava, tlacitko)
-  document.body.append(element)
-  tlacitko.addEventListener("click", function() {
-  	connection.send(zprava.value)
-  	novaZprava("Já: " + zprava.value, element)
-    zprava.value = ""
-  })
-  connection.on("data", function(data){
-  	novaZprava("Někdo: " + data, element)
-  })
-  connection.on("error", function(error){
-  	console.error(error)
-  	novaZprava("Chyba spojení okýnka")
-  })
-}
-
 
 // Konstanty
 const plocha = document.getElementById("plocha")
@@ -100,6 +9,8 @@ let had = [document.querySelector(".had")]
 let posledniKlavesa = 0;
 let rychlost;
 let velikost;
+let delkaHada = 1;
+
 
 // Události
 tlacitkoStart.addEventListener('click', function () {
@@ -111,7 +22,6 @@ document.addEventListener("keydown", autopohyb);
 
 // Počáteční nastavení
 zmenaMrizky()
-
 
 function pridejHadaNaNahodnePole() {
   let a = Math.floor(Math.random() * velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
@@ -193,10 +103,16 @@ function pohniHadem(dolu, doprava) {
     cilovePolicko.classList.remove("zradlo");
 
     pridejZradloNaNahodnePole()
-  } else {
+
+    delkaHada++;
+  // upraví délku hada
+  document.getElementById("delkaHada").textContent = delkaHada;
+}
+   else {
     const polickoKterePrestavaBytHadem = had.pop();
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
+
 }
 
 function autopohyb(udalost) {
