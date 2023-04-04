@@ -116,9 +116,10 @@ function pohniHadem(dolu, doprava) {
 }
 
 function autopohyb(udalost) {
-  const jeToPrvniKlavesa = (posledniKlavesa === 0 );
+  const jeToPrvniKlavesa = (posledniKlavesa === 0);
   posledniKlavesa = udalost.which;
   if (jeToPrvniKlavesa) {
+    console.log ("Opravdu to je první klávesa!")
     rychlost = setInterval(pohyb, 200);
   }
   console.log("Posledni klavesa je " + posledniKlavesa);
@@ -151,6 +152,9 @@ function pohyb() {
   }
 }
 
+
+
+
 function resetujHru() {
   // čistá plocha
   
@@ -162,11 +166,9 @@ function resetujHru() {
   //nový had a žrádlo
   pridejZradloNaNahodnePole();
   pridejHadaNaNahodnePole();
-  document.addEventListener("keydown", autopohyb);
-  document.addEventListener("keydown", pohyb);
   
-  rychlost = setInterval(pohyb, 200);
- 
+    document.addEventListener("keydown", autopohyb);
+  
 }
 
 function kontrolaProhry(cilovePolicko) {
