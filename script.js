@@ -92,7 +92,10 @@ function pohniHadem(dolu, doprava) {
 
   const cilovePolicko = document.getElementById(idCil);
 
-  kontrolaProhry(cilovePolicko)
+  if (kontrolaProhry(cilovePolicko)) {
+    resetujHru();
+    return
+  }
 
   had.unshift(cilovePolicko);
 
@@ -157,7 +160,9 @@ function pohyb() {
 
 function resetujHru() {
   // čistá plocha
-  
+ 
+  clearInterval(rychlost); //had se zastaví
+  posledniKlavesa = 0;
   let pole = document.querySelectorAll(".pole");
   pole.forEach(function(policko) {
     policko.classList.remove("had", "zradlo");
@@ -173,19 +178,17 @@ function resetujHru() {
 
 function kontrolaProhry(cilovePolicko) {
   if (cilovePolicko == null) {
-    clearInterval(rychlost); //had se zastaví
     window.alert("Had narazil do zdi:(");
-    resetujHru();
-   
+    return true
     //window.location.reload(); //page reload   
   }
-  else if (cilovePolicko.classList.contains("had")) {
-    clearInterval(rychlost); //had se zastaví
-    window.alert("Sebe sežrat nemůžeš");
-    resetujHru();
-    
-    //window.location.reload();
+
+  if (cilovePolicko.classList.contains("had")) { 
+    window.alert("Sebe sežrat nemůžeš"); 
+    return true
   }
+
+  return false
 }
 
 // save the score in local storage
