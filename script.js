@@ -5,11 +5,14 @@ const tlacitkoStart = document.getElementById("tlacitkoStart")
 const tlacitkoZmenVelikost = document.getElementById("tlacitkoZmenVelikost")
 
 // Globalní proměnné
-let had = [document.querySelector(".had")]
 let posledniKlavesa = 0;
-let rychlost;
-let velikost;
 let delkaHada = 1;
+
+let stavHry = {
+	velikost: 12,
+  rychlost: null, 
+  had: [document.querySelector(".had")]
+}
 
 
 // Události
@@ -24,24 +27,24 @@ document.addEventListener("keydown", autopohyb);
 zmenaMrizky()
 
 function pridejHadaNaNahodnePole() {
-  let a = Math.floor(Math.random() * velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
-  let b = Math.floor(Math.random() * velikost + 1) ;
+  let a = Math.floor(Math.random() * stavHry.velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
+  let b = Math.floor(Math.random() * stavHry.velikost + 1) ;
   let nahodnePole = document.getElementById(a + ":" + b)
 
   console.log("Chci hodit hada na " + a + ":" + b)
 
   nahodnePole.classList.add("had");
-  had = [nahodnePole]
+  stavHry.had = [nahodnePole]
 }
 
 function pridejZradloNaNahodnePole() {
-  let a = Math.floor(Math.random() * (velikost) + 1);
-  let b = Math.floor(Math.random() * (velikost) + 1);
+  let a = Math.floor(Math.random() * (stavHry.velikost) + 1);
+  let b = Math.floor(Math.random() * (stavHry.velikost) + 1);
   let nahodnePolee = document.getElementById(a + ":" + b);
 
   if (nahodnePolee.classList.contains("had")) {
     // Recursively call the function until an unoccupied pole is found
-    pridejZradloNaNahodnePole(velikost);
+    pridejZradloNaNahodnePole(stavHry.velikost);
   } else {
     nahodnePolee.classList.add("zradlo");
     console.log("Chci hodit zradlo na " + a + ":" + b);
@@ -59,12 +62,12 @@ function zmenaMrizky() {
   mrizka.append(puvodniMezera)
 
   const poleVelikost = document.getElementById("velikost");
-  velikost = parseInt(poleVelikost.value);
-  console.log("Měním mřížku na velikost " + velikost)
+  stavHry.velikost = parseInt(poleVelikost.value);
+  console.log("Měním mřížku na velikost " + stavHry.velikost)
 
-  mrizka.style.setProperty('--velikost', velikost)
-  for (let noveX = 1; noveX <= velikost; noveX++) {
-    for (let noveY = 1; noveY <= velikost; noveY++) {
+  mrizka.style.setProperty('--velikost', stavHry.velikost)
+  for (let noveX = 1; noveX <= stavHry.velikost; noveX++) {
+    for (let noveY = 1; noveY <= stavHry.velikost; noveY++) {
       const novyDiv = document.createElement("div");
       novyDiv.classList.add("pole");
       novyDiv.id = noveX + ":" + noveY
@@ -81,7 +84,7 @@ function zmenaMrizky() {
 }
  
 function pohniHadem(dolu, doprava) {
-  const hadiHlava = had[0];
+  const hadiHlava = stavHry.had[0];
   
   console.log("Had je na " + hadiHlava.id);
 
@@ -97,7 +100,7 @@ function pohniHadem(dolu, doprava) {
     return
   }
 
-  had.unshift(cilovePolicko);
+  stavHry.had.unshift(cilovePolicko);
 
   cilovePolicko.classList.add("had");
 
@@ -112,7 +115,7 @@ function pohniHadem(dolu, doprava) {
   document.getElementById("delkaHada").textContent = delkaHada;
 }
    else {
-    const polickoKterePrestavaBytHadem = had.pop();
+    const polickoKterePrestavaBytHadem = stavHry.had.pop();
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
 
@@ -123,16 +126,17 @@ function autopohyb(udalost) {
   posledniKlavesa = udalost.which;
   if (jeToPrvniKlavesa) {
     console.log ("Opravdu to je první klávesa!")
-    rychlost = setInterval(pohyb, 200);
+    clearInterval(stavHry.rychlost);
+    stavHry.rychlost = setInterval(pohyb, 150)
   }
   console.log("Posledni klavesa je " + posledniKlavesa);
 }
 
 function zrychlení() { 
-  if (velikost > 12){
+  if (stavHry.velikost > 12){
     console.log("Zrychluji hada");
-    clearInterval(rychlost);
-    rychlost = setInterval(pohyb, 100);
+    clearInterval(stavHry.rychlost);
+    stavHry.rychlost = setInterval(pohyb, 100);
   }
 }
 
@@ -161,7 +165,8 @@ function pohyb() {
 function resetujHru() {
   // čistá plocha
  
-  clearInterval(rychlost); //had se zastaví
+  clearInterval(stavHry.rychlost);
+  stavHry.rychlost = null //had se zastaví
   posledniKlavesa = 0;
   let pole = document.querySelectorAll(".pole");
   pole.forEach(function(policko) {
