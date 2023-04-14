@@ -11,8 +11,12 @@ let delkaHada = 1;
 let stavHry = {
 	velikost: 12,
   rychlost: null, 
-  had: [document.querySelector(".had")]
+  had: [{x: 9, y: 3}]
 }
+
+function vykresliStavHry {
+  
+} //zobrazení hry na obrazovku
 
 
 // Události
@@ -27,14 +31,14 @@ document.addEventListener("keydown", autopohyb);
 zmenaMrizky()
 
 function pridejHadaNaNahodnePole() {
-  let a = Math.floor(Math.random() * stavHry.velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
-  let b = Math.floor(Math.random() * stavHry.velikost + 1) ;
-  let nahodnePole = document.getElementById(a + ":" + b)
+  const x = Math.floor(Math.random() * stavHry.velikost + 1) ; //Math.floor zaokrouhlí na celé číslo dolů
+  const y = Math.floor(Math.random() * stavHry.velikost + 1) ;
+  const nahodnePole = document.getElementById(x + ":" + y)
 
-  console.log("Chci hodit hada na " + a + ":" + b)
+  console.log("Chci hodit hada na " + x + ":" + y)
 
   nahodnePole.classList.add("had");
-  stavHry.had = [nahodnePole]
+  stavHry.had = [{x: x, y: y}]
 }
 
 function pridejZradloNaNahodnePole() {
@@ -86,11 +90,9 @@ function zmenaMrizky() {
 function pohniHadem(dolu, doprava) {
   const hadiHlava = stavHry.had[0];
   
-  console.log("Had je na " + hadiHlava.id);
+  console.log("Had je na " + hadiHlava.x + ":" + hadiHlava.y);
 
-  let radek = parseInt(hadiHlava.id.split(":")[0]);
-  let sloupec = parseInt(hadiHlava.id.split(":")[1]);
-  const idCil = radek + dolu + ":" + (sloupec + doprava);
+  const idCil = hadiHlava.x + dolu + ":" + (hadiHlava.y + doprava);
   console.log("Had bude na " + idCil);
 
   const cilovePolicko = document.getElementById(idCil);
@@ -100,7 +102,7 @@ function pohniHadem(dolu, doprava) {
     return
   }
 
-  stavHry.had.unshift(cilovePolicko);
+  stavHry.had.unshift({x: hadiHlava.x + dolu, y: hadiHlava.y + doprava});
 
   cilovePolicko.classList.add("had");
 
@@ -115,7 +117,8 @@ function pohniHadem(dolu, doprava) {
   document.getElementById("delkaHada").textContent = delkaHada;
 }
    else {
-    const polickoKterePrestavaBytHadem = stavHry.had.pop();
+    const souradniceKteraPrestavaBytHadem = stavHry.had.pop();
+    const polickoKterePrestavaBytHadem = document.getElementById(souradniceKteraPrestavaBytHadem.x + ":" +  souradniceKteraPrestavaBytHadem.y)
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
 
