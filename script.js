@@ -11,12 +11,13 @@ let delkaHada = 1;
 let stavHry = {
 	velikost: 12,
   rychlost: null, 
-  had: [{x: 9, y: 3}]
+  had: [{x: 9, y: 3}],
+  zradlo: [{x: 4, y: 6}],
 }
 
-function vykresliStavHry {
+//function vykresliStavHry {
   
-} //zobrazení hry na obrazovku
+//} //zobrazení hry na obrazovku
 
 
 // Události
@@ -52,7 +53,7 @@ function pridejZradloNaNahodnePole() {
   } else {
     nahodnePolee.classList.add("zradlo");
     console.log("Chci hodit zradlo na " + a + ":" + b);
-    zradlo = [nahodnePolee];
+    stavHry.zradlo = [nahodnePolee];
   }
 }
 
@@ -106,23 +107,24 @@ function pohniHadem(dolu, doprava) {
 
   cilovePolicko.classList.add("had");
 
+
+
   if (cilovePolicko.classList.contains("zradlo")) {
-    console.log("Had bude žrát");
-    cilovePolicko.classList.remove("zradlo");
-
-    pridejZradloNaNahodnePole()
-
-    delkaHada++;
-  // upraví délku hada
-  document.getElementById("delkaHada").textContent = delkaHada;
-}
+  console.log("Had bude žrát");
+   cilovePolicko.classList.remove("zradlo");  // Odstraní žrádlo z herní plochy
+   stavHry.zradlo.splice(0, 1);    // Odstraní žrádlo ze stavuHry
+   pridejZradloNaNahodnePole()
+   delkaHada++;
+    document.getElementById("delkaHada").textContent = delkaHada; }  // upraví délku hada
+  //V BUDOUCNU TADY BUDE JAKÉSI  aktualizujHru();
    else {
     const souradniceKteraPrestavaBytHadem = stavHry.had.pop();
     const polickoKterePrestavaBytHadem = document.getElementById(souradniceKteraPrestavaBytHadem.x + ":" +  souradniceKteraPrestavaBytHadem.y)
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
-
 }
+
+
 
 function autopohyb(udalost) {
   const jeToPrvniKlavesa = (posledniKlavesa === 0);
@@ -162,9 +164,6 @@ function pohyb() {
   }
 }
 
-
-
-
 function resetujHru() {
   // čistá plocha
  
@@ -176,6 +175,7 @@ function resetujHru() {
     policko.classList.remove("had", "zradlo");
   });
   console.log("Odstraňuji žrádla a hada");
+  delkaHada = 1
   //nový had a žrádlo
   pridejZradloNaNahodnePole();
   pridejHadaNaNahodnePole();
@@ -199,10 +199,13 @@ function kontrolaProhry(cilovePolicko) {
   return false
 }
 
+
+
 // save the score in local storage
 function ulozDelkuHada() {
   localStorage.setItem('delkaHada', delkaHada);
 }
+
 
 // retrieve the score from local storage on page load
 window.onload = function() {
