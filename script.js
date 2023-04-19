@@ -90,7 +90,6 @@ function zmenaMrizky() {
  
 function pohniHadem(dolu, doprava) {
   const hadiHlava = stavHry.had[0];
-  
   console.log("Had je na " + hadiHlava.x + ":" + hadiHlava.y);
 
   const idCil = hadiHlava.x + dolu + ":" + (hadiHlava.y + doprava);
@@ -104,10 +103,7 @@ function pohniHadem(dolu, doprava) {
   }
 
   stavHry.had.unshift({x: hadiHlava.x + dolu, y: hadiHlava.y + doprava});
-
   cilovePolicko.classList.add("had");
-
-
 
   if (cilovePolicko.classList.contains("zradlo")) {
   console.log("Had bude žrát");
@@ -123,8 +119,6 @@ function pohniHadem(dolu, doprava) {
     polickoKterePrestavaBytHadem.classList.remove("had");
   }
 }
-
-
 
 function autopohyb(udalost) {
   const jeToPrvniKlavesa = (posledniKlavesa === 0);
@@ -180,9 +174,7 @@ function resetujHru() {
   //nový had a žrádlo
   pridejZradloNaNahodnePole();
   pridejHadaNaNahodnePole();
-  
-    document.addEventListener("keydown", autopohyb);
- 
+  document.addEventListener("keydown", autopohyb);
 }
 
 function kontrolaProhry(cilovePolicko) {
@@ -200,7 +192,6 @@ function kontrolaProhry(cilovePolicko) {
   return false
 }
 
-// save the score in local storage
 function ulozDelkuHada() {
   localStorage.setItem('delkaHada', delkaHada);
   window.onload = function() {
