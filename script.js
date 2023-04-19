@@ -166,7 +166,6 @@ function pohyb() {
 
 function resetujHru() {
   // čistá plocha
- 
   clearInterval(stavHry.rychlost);
   stavHry.rychlost = null //had se zastaví
   posledniKlavesa = 0;
@@ -176,12 +175,14 @@ function resetujHru() {
   });
   console.log("Odstraňuji žrádla a hada");
   delkaHada = 1
+  ulozDelkuHada()
+  document.getElementById("delkaHada").textContent = delkaHada;
   //nový had a žrádlo
   pridejZradloNaNahodnePole();
   pridejHadaNaNahodnePole();
   
     document.addEventListener("keydown", autopohyb);
-  
+ 
 }
 
 function kontrolaProhry(cilovePolicko) {
@@ -199,23 +200,16 @@ function kontrolaProhry(cilovePolicko) {
   return false
 }
 
-
-
 // save the score in local storage
 function ulozDelkuHada() {
   localStorage.setItem('delkaHada', delkaHada);
-}
-
-
-// retrieve the score from local storage on page load
-window.onload = function() {
-  if (localStorage.getItem('delkaHada')) {
-    delkaHada = parseInt(localStorage.getItem('delkaHada'));
-    
-  document.getElementById("delkaHada").textContent = delkaHada;
+  window.onload = function() {
+    if (localStorage.getItem('delkaHada')) {
+      delkaHada = parseInt(localStorage.getItem('delkaHada'));
+      document.getElementById("delkaHada").textContent = delkaHada;
+    }
   }
 }
-
 
 
 /*function objeveniPortalu(klavesaP) {
