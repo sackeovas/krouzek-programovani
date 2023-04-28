@@ -14,6 +14,103 @@ let stavHry = {
   had: [{x: 9, y: 3}],
   zradlo: [{x: 4, y: 6}],
 }
+/*
+var peer = new Peer();
+peer.on("open", function(mojeid) {
+	document.getElementById("mojeid").textContent = mojeid
+  peer.on("connection", function(connection) {
+    setInterval(() => connection.send(stavHry), 200)
+  })
+})
+peer.on("error", function(error) {
+  console.error(error)
+})
+
+function pripojse() {
+	const ciziid = document.getElementById("ciziid").value
+  if (ciziid === "") {
+  	return
+  }
+  document.getElementById("ciziid").value = ""
+	const connection = peer.connect(ciziid)
+  connection.on('open', function(){
+    skryjButtonky()
+    connection.on("data", function(stavHry){
+      zobrazStavHry(stavHry)
+    })
+  })
+  connection.on("error", function(error) {
+  	console.error(error)
+  })
+}
+*/
+
+/*peer.on("open", function(mojeid) {
+	document.getElementById("mojeid").textContent = mojeid
+  peer.on("connection", function(connection) {
+		noveOkynko(connection.peer, connection)
+  })
+})
+*/
+var peer = new Peer();
+peer.on("open", function(mojeid) {
+	document.getElementById("mojeid").textContent = mojeid
+  peer.on("connection", function(connection) {
+		noveOkynko(connection.peer, connection)
+  })
+})
+peer.on("error", function(error) {
+  console.error(error)
+  novaZprava("Chyba spojení")
+})
+
+
+function pripojse() {
+	const ciziid = document.getElementById("ciziid").value
+  if (ciziid === "") {
+  	return
+  }
+  document.getElementById("ciziid").value = ""
+	const connection = peer.connect(ciziid)
+  connection.on('open', function(){
+  	noveOkynko(ciziid, connection)
+  })
+  connection.on("error", function(error) {
+  	console.error(error)
+  	novaZprava("Nepodařilo se připojit k " + ciziid)
+  })
+}
+function novaZprava(text, element) {
+	if (element === undefined) {
+  	element = document.body
+  }
+  const zprava = document.createElement("p")
+  zprava.textContent = text
+  element.append(zprava)
+}
+
+function noveOkynko(ciziid, connection) {
+	const element = document.createElement("div")
+  const nadpis = document.createElement("h2")
+  const zprava = document.createElement("input")
+  const tlacitko = document.createElement("button")
+  nadpis.textContent = ciziid
+  tlacitko.textContent = "Napiš!"
+  element.append(nadpis, zprava, tlacitko)
+  document.body.append(element)
+  tlacitko.addEventListener("click", function() {
+  	connection.send(zprava.value)
+  	novaZprava("Já: " + zprava.value, element)
+    zprava.value = ""
+  })
+  connection.on("data", function(data){
+  	novaZprava("Někdo: " + data, element)
+  })
+  connection.on("error", function(error){
+  	console.error(error)
+  	novaZprava("Chyba spojení okýnka")
+  })
+}
 
 //function vykresliStavHry {
   
@@ -48,7 +145,6 @@ function pridejZradloNaNahodnePole() {
   let nahodnePolee = document.getElementById(a + ":" + b);
 
   if (nahodnePolee.classList.contains("had")) {
-    // Recursively call the function until an unoccupied pole is found
     pridejZradloNaNahodnePole(stavHry.velikost);
   } else {
     nahodnePolee.classList.add("zradlo");
@@ -200,7 +296,14 @@ function ulozDelkuHada() {
       document.getElementById("delkaHada").textContent = delkaHada;
     }
   }
+  /*if (delkaHada>1) {
+    document.getElementById("delkaHada").textContent = delkaHada;
+  }*/
 }
+
+/* Co chci dalšího udělat:
+    - zobrazovat stav hry na obrazovku -> udělat na to funkci
+    - uložit nejdelší délku hada (nejvyšší číslo u délky hada) tak, aby hráč věděl „kolik nahrál nejvíce“
 
 
 /*function objeveniPortalu(klavesaP) {
