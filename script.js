@@ -17,6 +17,7 @@ let stavHry = {
 
 var peer = new Peer();
 peer.on("open", function(mojeid) {
+  console.log('My peer ID is: ' + mojeid);
 	document.getElementById("mojeid").textContent = mojeid
   peer.on("connection", function(connection) {
     setInterval(() => connection.send(stavHry), 200)
@@ -45,15 +46,26 @@ function pripojse() {
   })
 }
 
+
 function skryjButtonky() {
-  tlacitkoStart.remove()
-  tlacitkoZmenVelikost.remove()
-  document.getElementById("velikost").remove()
-  plocha.style.display = ""
+  var tlacitkoStart = document.getElementById("tlacitkoStart");
+  var tlacitkoZmenVelikost = document.getElementById("tlacitkoZmenVelikost");
+  var velikost = document.getElementById("velikost");
+  var plocha = document.getElementById("plocha");
+
+  tlacitkoStart.remove();
+  tlacitkoZmenVelikost.remove();
+  velikost.remove();
+  plocha.style.display = "";
 }
 
-function zobrazStavHry {
-  
+function zobrazStavHry (stavHry){
+ // had.forEach((polickoHada) => { });
+ for (let i = 0; i < had.length; i++) {
+  const polickoHada = had[i];
+  context.fillStyle = "green";
+  context.fillRect(polickoHada.x * tileSize, polickoHada.y * tileSize, tileSize, tileSize);
+}
 } //zobrazení hry na obrazovku
 
 
