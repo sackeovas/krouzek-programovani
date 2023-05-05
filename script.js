@@ -4,6 +4,8 @@ const plocha = document.getElementById("plocha")
 const tlacitkoStart = document.getElementById("tlacitkoStart")
 const tlacitkoZmenVelikost = document.getElementById("tlacitkoZmenVelikost")
 
+console.log(plocha)
+
 // Globalní proměnné
 let posledniKlavesa = 0;
 let delkaHada = 1;
@@ -20,7 +22,10 @@ peer.on("open", function(mojeid) {
   console.log('My peer ID is: ' + mojeid);
 	document.getElementById("mojeid").textContent = mojeid
   peer.on("connection", function(connection) {
-    setInterval(() => connection.send(stavHry), 200)
+    setInterval(() => {
+      console.log ("posílám stavhry", stavHry)
+      connection.send(stavHry)
+    }, 200)
   })
 })
 peer.on("error", function(error) {
@@ -38,6 +43,7 @@ function pripojse() {
     console.log("Připojil se!")
     skryjButtonky()
     connection.on("data", function(stavHry){
+      console.log ("přijíémam stavhry", stavHry)
       zobrazStavHry(stavHry)
     })
   })
@@ -60,22 +66,42 @@ function skryjButtonky() {
 }
 
 function zobrazStavHry (stavHry){
- // had.forEach((polickoHada) => { });
- for (let i = 0; i < had.length; i++) {
-  const polickoHada = had[i];
-  context.fillStyle = "green";
-  context.fillRect(polickoHada.x * tileSize, polickoHada.y * tileSize, tileSize, tileSize);
-}
+  for (const element of plocha.querySelectorAll("br, .pole")) {
+    element.remove()
+  }
+  const puvodniMezera = document.createElement("br");
+  plocha.append(puvodniMezera)
+  plocha.style.setProperty('--velikost', stavHry.velikost)
+  for (let noveX = 1; noveX <= stavHry.velikost; noveX++) {
+    for (let noveY = 1; noveY <= stavHry.velikost; noveY++) {
+      const novyDiv = document.createElement("div");
+      novyDiv.classList.add("pole");
+      novyDiv.id = noveX + ":" + noveY
+      plocha.append(novyDiv);
+    }
+    const noveBr = document.createElement("br");
+    plocha.append(noveBr);
+  }
+  stavHry.had.forEach(({x, y}) => {
+    const poleHada = document.getElementById(x + ":" + y)
+    poleHada.classList.add("had");
+   });
+  stavHry.zradlo.forEach(({x, y}) => {
+    const poleZradla = document.getElementById(x + ":" + y)
+    poleZradla.classList.add("zradlo");
+   });
 } //zobrazení hry na obrazovku
 
 
 // Události
 tlacitkoStart.addEventListener('click', function () {
+  console.log("Hra začala.")
   tlacitkoStart.remove()
   plocha.style.display = ""
+  document.addEventListener("keydown", autopohyb);
 });
 tlacitkoZmenVelikost.addEventListener("click", zmenaMrizky)
-document.addEventListener("keydown", autopohyb);
+
 
 // Počáteční nastavení
 zmenaMrizky()
@@ -92,16 +118,17 @@ function pridejHadaNaNahodnePole() {
 }
 
 function pridejZradloNaNahodnePole() {
-  let a = Math.floor(Math.random() * (stavHry.velikost) + 1);
-  let b = Math.floor(Math.random() * (stavHry.velikost) + 1);
-  let nahodnePolee = document.getElementById(a + ":" + b);
+  let x = Math.floor(Math.random() * (stavHry.velikost) + 1);
+  let y = Math.floor(Math.random() * (stavHry.velikost) + 1);
+  let nahodnePolee = document.getElementById(x + ":" + y);
 
   if (nahodnePolee.classList.contains("had")) {
     pridejZradloNaNahodnePole(stavHry.velikost);
   } else {
     nahodnePolee.classList.add("zradlo");
-    console.log("Chci hodit zradlo na " + a + ":" + b);
-    stavHry.zradlo = [nahodnePolee];
+    console.log("Chci hodit zradlo na " + x + ":" + y);
+    stavHry.zradlo.push({x: x, y: y})
+
   }
 }
 
@@ -156,7 +183,7 @@ function pohniHadem(dolu, doprava) {
   if (cilovePolicko.classList.contains("zradlo")) {
   console.log("Had bude žrát");
    cilovePolicko.classList.remove("zradlo");  // Odstraní žrádlo z herní plochy
-   stavHry.zradlo.splice(0, 1);    // Odstraní žrádlo ze stavuHry
+   stavHry.zradlo = []   // Odstraní žrádlo ze stavuHry
    pridejZradloNaNahodnePole()
    delkaHada++;
     document.getElementById("delkaHada").textContent = delkaHada; }  // upraví délku hada
