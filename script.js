@@ -43,7 +43,7 @@ function pripojse() {
     console.log("Připojil se!")
     skryjButtonky()
     connection.on("data", function(stavHry){
-      console.log ("přijíémam stavhry", stavHry)
+      console.log ("přijímám stavhry", stavHry)
       zobrazStavHry(stavHry)
     })
   })
@@ -90,7 +90,7 @@ function zobrazStavHry (stavHry){
     const poleZradla = document.getElementById(x + ":" + y)
     poleZradla.classList.add("zradlo");
    });
-} //zobrazení hry na obrazovku
+} 
 
 
 // Události
@@ -121,14 +121,13 @@ function pridejZradloNaNahodnePole() {
   let x = Math.floor(Math.random() * (stavHry.velikost) + 1);
   let y = Math.floor(Math.random() * (stavHry.velikost) + 1);
   let nahodnePolee = document.getElementById(x + ":" + y);
-
+  
   if (nahodnePolee.classList.contains("had")) {
-    pridejZradloNaNahodnePole(stavHry.velikost);
+    pridejZradloNaNahodnePole();
   } else {
     nahodnePolee.classList.add("zradlo");
     console.log("Chci hodit zradlo na " + x + ":" + y);
-    stavHry.zradlo.push({x: x, y: y})
-
+    stavHry.zradlo = [{x: x, y: y}];
   }
 }
 
@@ -159,7 +158,6 @@ function zmenaMrizky() {
   }
   pridejHadaNaNahodnePole()
   pridejZradloNaNahodnePole()
-  //nesmrtelnost()
   zrychlení()
 }
  
