@@ -9,6 +9,7 @@ console.log(plocha)
 // Globalní proměnné
 let posledniKlavesa = 0;
 let delkaHada = 1;
+let nejdelsiHad =1;
 
 let stavHry = {
 	velikost: 12,
@@ -92,8 +93,6 @@ function zobrazStavHry (stavHry){
    });
   autopohyb()
 } 
-
-//function aktualizujStavHry (){}
 
 // Události
 tlacitkoStart.addEventListener('click', function () {
@@ -243,9 +242,17 @@ function resetujHru() {
     policko.classList.remove("had", "zradlo");
   });
   console.log("Odstraňuji žrádla a hada");
-  delkaHada = 1
-  ulozDelkuHada()
+
+  delkaHada = 1;
   document.getElementById("delkaHada").textContent = delkaHada;
+
+  nejdelsiHad = parseInt(localStorage.getItem('nejdelsiHad'));
+  document.getElementById("nejdelsiHad").textContent = nejdelsiHad;
+
+  if (!nejdelsiHad || delkaHada > nejdelsiHad) {
+    localStorage.setItem("nejdelsiHad", delkaHada);
+  }
+  
   //nový had a žrádlo
   pridejZradloNaNahodnePole();
   pridejHadaNaNahodnePole();
@@ -275,24 +282,10 @@ function ulozDelkuHada() {
       document.getElementById("delkaHada").textContent = delkaHada;
     }
   }
-  /*if (delkaHada>1) {
-    document.getElementById("delkaHada").textContent = delkaHada;
-  }*/
 }
-
-/* Co chci dalšího udělat:
-    - zobrazovat stav hry na obrazovku -> udělat na to funkci
-    - uložit nejdelší délku hada (nejvyšší číslo u délky hada) tak, aby hráč věděl „kolik nahrál nejvíce“
-
-
-/*function objeveniPortalu(klavesaP) {
-  const jeToP = (klavesaPortal === 80);
-  klavesaPortal = klavesaP.which;
-  if (jeToP) {
-    portaly()
+  if (stavHry.had.length>delkaHada) {
+    document.getElementById("nejdelsiHad").textContent = stavHry.had.length;
   }
-}
-function portaly() {
-  console.log("Portály se spawnou");
-  if ()
-}*/
+
+
+
