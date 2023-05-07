@@ -25,7 +25,7 @@ peer.on("open", function(mojeid) {
     setInterval(() => {
       console.log ("posílám stavhry", stavHry)
       connection.send(stavHry)
-    }, 200)
+    }, 50)
   })
 })
 peer.on("error", function(error) {
@@ -90,8 +90,10 @@ function zobrazStavHry (stavHry){
     const poleZradla = document.getElementById(x + ":" + y)
     poleZradla.classList.add("zradlo");
    });
+  autopohyb()
 } 
 
+//function aktualizujStavHry (){}
 
 // Události
 tlacitkoStart.addEventListener('click', function () {
