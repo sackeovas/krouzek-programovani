@@ -185,14 +185,16 @@ function pohniHadem(dolu, doprava) {
    stavHry.zradlo = []   // Odstraní žrádlo ze stavuHry
    pridejZradloNaNahodnePole()
    delkaHada++;
-   nejdelsiHad++;
-    document.getElementById("delkaHada").textContent = delkaHada; }  // upraví délku hada
-    nejdelsiHad = parseInt(localStorage.getItem('nejdelsiHad'));
-    document.getElementById("nejdelsiHad").textContent = nejdelsiHad;
-  
     if (delkaHada > nejdelsiHad) {
       localStorage.setItem("nejdelsiHad", delkaHada);
     }
+    document.getElementById("delkaHada").textContent = delkaHada; 
+    // upraví délku hada
+    nejdelsiHad = parseInt(localStorage.getItem('nejdelsiHad'));
+    document.getElementById("nejdelsiHad").textContent = nejdelsiHad;
+  
+    
+  }
   //V BUDOUCNU TADY BUDE JAKÉSI  aktualizujHru();
    else {
     const souradniceKteraPrestavaBytHadem = stavHry.had.pop();
