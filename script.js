@@ -265,7 +265,6 @@ function kontrolaProhry(cilovePolicko) {
   if (cilovePolicko == null) {
     window.alert("Had narazil do zdi:(");
     return true
-    //window.location.reload(); //page reload   
   }
 
   if (cilovePolicko.classList.contains("had")) { 
