@@ -185,7 +185,14 @@ function pohniHadem(dolu, doprava) {
    stavHry.zradlo = []   // Odstraní žrádlo ze stavuHry
    pridejZradloNaNahodnePole()
    delkaHada++;
+   nejdelsiHad++;
     document.getElementById("delkaHada").textContent = delkaHada; }  // upraví délku hada
+    nejdelsiHad = parseInt(localStorage.getItem('nejdelsiHad'));
+    document.getElementById("nejdelsiHad").textContent = nejdelsiHad;
+  
+    if (delkaHada > nejdelsiHad) {
+      localStorage.setItem("nejdelsiHad", delkaHada);
+    }
   //V BUDOUCNU TADY BUDE JAKÉSI  aktualizujHru();
    else {
     const souradniceKteraPrestavaBytHadem = stavHry.had.pop();
@@ -246,12 +253,7 @@ function resetujHru() {
   delkaHada = 1;
   document.getElementById("delkaHada").textContent = delkaHada;
 
-  nejdelsiHad = parseInt(localStorage.getItem('nejdelsiHad'));
-  document.getElementById("nejdelsiHad").textContent = nejdelsiHad;
 
-  if (!nejdelsiHad || delkaHada > nejdelsiHad) {
-    localStorage.setItem("nejdelsiHad", delkaHada);
-  }
   
   //nový had a žrádlo
   pridejZradloNaNahodnePole();
@@ -270,7 +272,6 @@ function kontrolaProhry(cilovePolicko) {
     window.alert("Sebe sežrat nemůžeš"); 
     return true
   }
-
   return false
 }
 
@@ -283,9 +284,6 @@ function ulozDelkuHada() {
     }
   }
 }
-  if (stavHry.had.length>delkaHada) {
-    document.getElementById("nejdelsiHad").textContent = stavHry.had.length;
-  }
 
 
 
